@@ -19,9 +19,17 @@
     text-align: left;
     border-bottom: 1px solid #eee;
   }
+
+  td{
+    color: black;
+   }
+
+   th {
+    color: white
+   }
   
   .container-info-table th {
-    background-color: #f8f8f8;
+    background-color: #8F1D14;
     font-weight: bold;
   }
   

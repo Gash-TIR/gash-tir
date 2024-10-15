@@ -7,6 +7,7 @@
 
   justify-content: center;
   align-items: center;
+  background-color: #EEEDEB;
 }
 
 .upload-container {
@@ -36,7 +37,7 @@
 .preview-area {
   width: 100%;
   height: 500px;
-  background-color: #f0f0f0;
+  background-color: #C7C8CC;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,8 +46,9 @@
 
 .preview-image {
   width: 100%;
-  max-height: 100%;
+  max-height: auto;
   object-fit: contain;
+  border: 1px solid #ccc;
 }
 
 .placeholder-image {
@@ -77,15 +79,36 @@
 }
 
 .dropzone {
-  border: 2px dashed #ccc;
-  border-radius: 4px;
-  padding: 20px;
-  height: 100px;
+  border: 3px dashed #343131;
+  border-radius: 20px;
+  height: 200px;
   text-align: center;
   cursor: pointer;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+    background-color: #C7C8CC;
+}
+
+.dropzone:hover {
+ border-color: #EE2B47;
+}
+
+.upload-icon {
+  width: 80px;  
+  height: auto;  
+  border-radius: 10px; 
+  margin-bottom: 10px;
+}
+
+.preview-icon {
+  width: 300px;
+  border-radius: 15px;
+}
+
+.box__dragndrop {
+  margin-top: 5px; 
 }
 .modal {
   display: none; /* El modal está oculto por defecto */
@@ -107,32 +130,37 @@
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
-  max-width: 500px;
+  max-width: 300px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .modal-content-inside {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  width: 80%;
-  max-width: 500px;
-}
-.close-modal-btn {
-  background-color: red;
-  color: white;
-  border: none;
+  margin: 0 auto;
   padding: 10px;
+  width: 100%;
+  max-width: 350px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.close-modal-btn {
+  background-color: darkgray;
+  color: black;
+  border: none;
+  padding: 10px 20px;
   cursor: pointer;
   border-radius: 5px;
-  margin-top: 10px;
+  margin-top: 20px;
   margin-left: 20px;
 }
 
 .open-webcam-btn {
-  background-color: #4CAF50;
+  background-color: #393E46;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -142,13 +170,26 @@
 }
 
 .open-webcam-btn:hover {
-  background-color: #45a049;
+  background-color:#C73659;
 }
 
-.close-modal-btn:hover {
-  background-color: #ff4c4c;
+.modal-buttons {
+  display: flex;              
+  justify-content: center;    
+  align-items: center;
+  gap: 10px;            
+  margin-top: 15px;    
+  z-index: 2;
 }
 
 .modal.show {
   display: flex; /* Mostrar el modal */
+}
+
+.page-header {
+  text-align: center;
+  font-size: 2em; 
+  color: black; 
+  margin-bottom: 20px; 
+  font-weight: bold;
 }
