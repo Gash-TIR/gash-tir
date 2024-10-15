@@ -21,11 +21,15 @@
   }
 
   td{
-    color: white;
+    color: black;
+   }
+
+   th {
+    color: white
    }
   
   .container-info-table th {
-    background-color: darkred;;
+    background-color: #8F1D14;
     font-weight: bold;
   }
   

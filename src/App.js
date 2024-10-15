@@ -8,7 +8,7 @@ import DataInfoConfidence from './DataInfoConfidence';
 import detectText from "./rekognition";
 import Webcam from 'react-webcam';
 import image from './image.png';
-import preview_icon from "./preview_icon.png"
+import preview1 from "./preview1.png"
 
 Amplify.configure(awsconfig);
 
@@ -132,7 +132,7 @@ function App() {
               <img src={previewUrl} alt="Preview" className="preview-image" />
             ) : (
               <div className="placeholder-image">
-                <img src={preview_icon} alt="Upload Icon" className="preview-icon" />
+                <img src={preview1} alt="Upload Icon" className="preview-icon" />
               </div>
             )}
           </div>
