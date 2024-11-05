@@ -7,6 +7,8 @@ import ContainerInfoTable from './ContainerInfoTable';
 import DataInfoConfidence from './DataInfoConfidence';
 import detectText from "./rekognition";
 import Webcam from 'react-webcam';
+import image from './image.png';
+import preview1 from "./preview1.png"
 
 Amplify.configure(awsconfig);
 
@@ -124,27 +126,38 @@ function App() {
     <div className="App">
       <div className="upload-container" style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div className="preview-section">
+        <header className='page-header'>Gash Contenedores</header>
           <div className="preview-area">
             {previewUrl ? (
               <img src={previewUrl} alt="Preview" className="preview-image" />
             ) : (
               <div className="placeholder-image">
-                <span role="img" aria-label="Image icon">🖼️</span>
+                <img src={preview1} alt="Upload Icon" className="preview-icon" />
               </div>
             )}
           </div>
           <div className="center-container">
             <div className="upload-section">
-              <div {...getRootProps({ className: 'dropzone' })}>
-                <input {...getInputProps()} />
-                {isDragActive ? (
-                  <p>Arrastre la imagen aquí ...</p>
-                ) : (
-                    <button className="choose-file-btn">Seleccione una imagen</button>
-                )}
+              <div className="dropzone">
+                <label htmlFor="file" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', }}
+                  {...getRootProps({ className: 'dropzone-label' })}
+                  >
+                  <input {...getInputProps()} />
+                  {isDragActive ? (
+                    <p>Arrastre la imagen aquí ...</p>
+                  ) : (
+                    <>
+                      <img src={image} alt="Upload Icon" className="upload-icon" />
+                      <strong>Seleccione una imagen</strong>
+                      <span className="box__dragndrop"> o arrastre aquí</span>
+                    </>
+                  )}
+                </label>
+                <button className="open-webcam-btn" onClick={openWebcamModal}>
+                  Abrir Cámara
+                </button>
               </div>
             </div>
-            <button className="open-webcam-btn" onClick={openWebcamModal}>Abrir Cámara</button>
           </div>
         </div>
         <div className="table-section">
@@ -164,8 +177,10 @@ function App() {
               videoConstraints={videoConstraints}
             />
           )}
-          <button className="open-webcam-btn" onClick={capturePhoto}>Tomar Foto</button>
-          <button className="close-modal-btn" onClick={closeWebcamModal}>Cerrar</button>
+          <div className="modal-buttons">
+            <button className="open-webcam-btn" onClick={capturePhoto}>Tomar Foto</button>
+            <button className="close-modal-btn" onClick={closeWebcamModal}>Cerrar</button>
+          </div>
         </div>
       </div>
     </div>
