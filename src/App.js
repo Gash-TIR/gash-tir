@@ -14,14 +14,40 @@ function App() {
   const [previewUrl, setPreviewUrl] = useState('');
   const [detectedTexts, setDetectedTexts] = useState([]);
   const [containerData, setContainerData] = useState({
-    owner: '',
-    type: '',
-    id: '',
-    verifier: '',
-    isoType: '',
+    owner: '', ownerConfidence: '',
+    type: '', typeConfidence: '',
+    id: '', idConfidence: '',
+    verifier: '', verifierConfidence: '',
+    isoType: '', isoTypeConfidence: ''
   });
+  const [error, setError] = useState('');
   const webcamRef = useRef(null);
   const [isWebcamOpen, setIsWebcamOpen] = useState(false);
+
+  const processDetectedText = (result) => {
+    const { extractedData, textResults } = result;
+
+    if (!extractedData.containerOwner && textResults.length === 0) {
+      setError("Error: No se detectó un código de contenedor válido.");
+      return;
+    }
+
+    setContainerData({
+      owner: extractedData.containerOwner || '',
+      ownerConfidence: extractedData.containerOwnerConfidence || '',
+      type: extractedData.containerType || '',
+      typeConfidence: extractedData.containerTypeConfidence || '',
+      id: extractedData.id || '',
+      idConfidence: extractedData.idConfidence || '',
+      verifier: extractedData.verifier || '',
+      verifierConfidence: extractedData.verifierConfidence || '',
+      isoType: extractedData.isoType || '',
+      isoTypeConfidence: extractedData.isoTypeConfidence || ''
+    });
+
+    setDetectedTexts(textResults);
+    setError('');
+  };
 
   const onDrop = useCallback(async (acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -31,41 +57,21 @@ function App() {
       setPreviewUrl(URL.createObjectURL(file));
 
       try {
-        const result = await Storage.put(fileName, file, {
-          contentType: file.type,
-          level: 'public',
-        });
+        await Storage.put(fileName, file, { contentType: file.type, level: 'public' });
         const detectedTextResults = await detectText(fileName);
-        setDetectedTexts(detectedTextResults);
-        if (detectedTextResults.length >= 4) {
-          const ownerAndType = detectedTextResults[0].text;
-          const newContainerData = {
-            owner: ownerAndType.slice(0, 3),
-            type: ownerAndType.slice(3, 4),
-            id: detectedTextResults[1].text,
-            verifier: detectedTextResults[2].text,
-            isoType: detectedTextResults[3].text,
-          };
-          setContainerData(newContainerData);
-        }
-
-        await Storage.get(result.key);
+        processDetectedText(detectedTextResults);
       } catch (err) {
         console.error('Error al subir el archivo:', err);
       }
     }
   }, []);
 
-  const openWebcamModal = () => {
-    setIsWebcamOpen(true);
-  };
+  const openWebcamModal = () => setIsWebcamOpen(true);
 
   const closeWebcamModal = () => {
     setIsWebcamOpen(false);
-    if (webcamRef.current && webcamRef.current.video && webcamRef.current.video.srcObject) {
-      const stream = webcamRef.current.video.srcObject;
-      const tracks = stream.getTracks();
-      tracks.forEach(track => track.stop());
+    if (webcamRef.current?.video?.srcObject) {
+      webcamRef.current.video.srcObject.getTracks().forEach(track => track.stop());
     }
   };
 
@@ -78,31 +84,10 @@ function App() {
       try {
         const response = await fetch(imageSrc);
         const blob = await response.blob();
-
-        const result = await Storage.put(fileName, blob, {
-          contentType: 'image/jpeg',
-          level: 'public',
-        });
-
-        console.log('Foto subida con éxito:', result);
+        await Storage.put(fileName, blob, { contentType: 'image/jpeg', level: 'public' });
 
         const detectedTextResults = await detectText(fileName);
-        setDetectedTexts(detectedTextResults);
-
-        if (detectedTextResults.length >= 4) {
-          const ownerAndType = detectedTextResults[0].text;
-          const newContainerData = {
-            owner: ownerAndType.slice(0, 3),
-            type: ownerAndType.slice(3, 4),
-            id: detectedTextResults[1].text,
-            verifier: detectedTextResults[2].text,
-            isoType: detectedTextResults[3].text,
-          };
-          setContainerData(newContainerData);
-        }
-
-        await Storage.get(result.key);
-
+        processDetectedText(detectedTextResults);
       } catch (err) {
         console.error('Error al subir la foto:', err);
       }
@@ -111,37 +96,21 @@ function App() {
     }
   };
 
-  const videoConstraints = {
-    facingMode: 'environment',
-  };
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: 'image/*',
-  });
+  const videoConstraints = { facingMode: 'environment' };
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: 'image/*' });
 
   return (
     <div className="App">
-      <div className="upload-container" style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div className="upload-container">
         <div className="preview-section">
           <div className="preview-area">
-            {previewUrl ? (
-              <img src={previewUrl} alt="Preview" className="preview-image" />
-            ) : (
-              <div className="placeholder-image">
-                <span role="img" aria-label="Image icon">🖼️</span>
-              </div>
-            )}
+            {previewUrl ? <img src={previewUrl} alt="Preview" className="preview-image" /> : <div className="placeholder-image">🖼️</div>}
           </div>
           <div className="center-container">
             <div className="upload-section">
               <div {...getRootProps({ className: 'dropzone' })}>
                 <input {...getInputProps()} />
-                {isDragActive ? (
-                  <p>Arrastre la imagen aquí ...</p>
-                ) : (
-                    <button className="choose-file-btn">Seleccione una imagen</button>
-                )}
+                {isDragActive ? <p>Arrastre la imagen aquí ...</p> : <button className="choose-file-btn">Seleccione una imagen</button>}
               </div>
             </div>
             <button className="open-webcam-btn" onClick={openWebcamModal}>Abrir Cámara</button>
@@ -149,6 +118,7 @@ function App() {
         </div>
         <div className="table-section">
           <h1>Información del Contenedor</h1>
+          {error && <p className="error-message">{error}</p>}
           <ContainerInfoTable containerData={containerData} />
           <DataInfoConfidence containerData={detectedTexts} />
         </div>
