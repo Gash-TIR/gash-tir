@@ -1,53 +1,122 @@
 .container-info-table {
-    font-family: Arial, sans-serif;
-    width: 100%;
-    max-width: 600px;
-    margin: 20px auto;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    overflow: hidden;
+  font-family: Arial, sans-serif;
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.container-info-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.container-info-table th,
+.container-info-table td {
+  padding: 10px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.container-info-table th {
+  background-color: #f8f8f8;
+  font-weight: bold;
+}
+
+/* Estilos para la edición */
+.editing-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.options-dropdown,
+.custom-input {
+  flex: 1;
+  min-width: 120px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.button-group {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.save-button, .cancel-button, .edit-button {
+  padding: 8px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-button { background-color: #28a745; color: white; }
+.cancel-button { background-color: #dc3545; color: white; }
+
+/* .display-value {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+} */
+.display-value {
+  display: grid;
+  grid-template-columns: 1fr auto; /* La primera columna ocupa todo el espacio disponible, la segunda se ajusta automáticamente */
+  align-items: center;
+  width: 100%;
+  gap: 8px; /* Espacio entre elementos */
+}
+
+.edit-button {
+  background-color: #008CBA;
+  color: white;
+  padding: 8px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: auto;
+}
+td{
+  color: black;
+ }
+
+ th {
+  color: white
+ }
+
+.container-info-table th {
+  background-color: #8F1D14;
+  font-weight: bold;
+}
+
+@media (max-width: 500px) {
+  .input-group {
+      flex-direction: column;
   }
   
-  .container-info-table table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .container-info-table th,
-  .container-info-table td {
-    padding: 10px 15px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
+  .button-group {
+      flex-direction: column;
   }
 
-  td{
-    color: black;
-   }
+  .options-dropdown, .custom-input {
+      width: 100%
+  }
 
-   th {
-    color: white
-   }
-  
-  .container-info-table th {
-    background-color: #8F1D14;
-    font-weight: bold;
+  .save-button, .cancel-button, .edit-button {
+      width: 100%;
   }
-  
-  .container-info-table tr:last-child td {
-    border-bottom: none;
-  }
-  
-  .info-link {
-    background-color: #f8f8f8;
-    padding: 10px 15px;
-    text-align: left;
-  }
-  
-  .info-link a {
-    color: #0066cc;
-    text-decoration: none;
-  }
-  
-  .info-link a:hover {
-    text-decoration: underline;
-  }
+
+}
