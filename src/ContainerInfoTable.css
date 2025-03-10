@@ -64,12 +64,21 @@
 
 .save-button { background-color: #28a745; color: white; }
 .cancel-button { background-color: #dc3545; color: white; }
-.display-value {
+
+/* .display-value {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+} */
+.display-value {
+  display: grid;
+  grid-template-columns: 1fr auto; /* La primera columna ocupa todo el espacio disponible, la segunda se ajusta automáticamente */
+  align-items: center;
+  width: 100%;
+  gap: 8px; /* Espacio entre elementos */
 }
+
 .edit-button {
   background-color: #008CBA;
   color: white;
@@ -79,6 +88,18 @@
   border-radius: 4px;
   cursor: pointer;
   margin-left: auto;
+}
+td{
+  color: black;
+ }
+
+ th {
+  color: white
+ }
+
+.container-info-table th {
+  background-color: #8F1D14;
+  font-weight: bold;
 }
 
 @media (max-width: 500px) {
@@ -97,4 +118,5 @@
   .save-button, .cancel-button, .edit-button {
       width: 100%;
   }
+
 }
